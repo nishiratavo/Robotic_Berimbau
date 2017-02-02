@@ -65,62 +65,6 @@ int MIDI::decode(byte command, byte note, byte velocity, int *parameter, int *an
 		*angle = velocity;
 		return 2;
 	}
-
-
-
-
-
-
-
-
-	int state = 0;
-	if (command == NOTEON_CH0)
-	{
-		state = 1; // Play note
-	}
-	else if (command == CONTROL_CHANGE)
-	{
-		state = 2; // calibration
-	}
-	if (state == 1)
-	{
-		switch(note)
-		{
-			case NOTE_DOM : // run stick()
-				return 1;
-			break;
-
-			case NOTE_DIM : // run stick and stone() / stone full strength
-				return 2;
-			break;
-
-			case NOTE_TIM : // run stick and stone() / stone half strength
-				return 3;
-			break;
-
-			default :
-				return 0;
-		}
-	}
-	if (state == 2)
-	{
-		if (note == CONTROL_0)
-		{
-			state = 3; // 
-		}
-		else if(note == CONTROL_1)
-		{
-			state = 4;
-		}
-	}
-	if (state == 3)
-	{
-		*parameter = velocity;
-	}
-	if (state == 4)
-	{
-		
-	}
 	
 }
 
