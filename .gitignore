@@ -1,0 +1,13 @@
+*~
+*.log
+*.out
+*.aux
+*.flac
+*.wav
+*.mid
+*.txt
+.DS_Store
+*.o
+*.a
+*.elf
+*.d
