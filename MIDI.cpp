@@ -1,20 +1,28 @@
 #include "MIDI.h"
 #include "Arduino.h"
 
-MIDI::MIDI(long int baud_rate)
+MIDI::MIDI()
 {
-	Serial.begin(baud_rate);
 }
 
-void MIDI::receive(byte command, byte note, byte velocity)
+int MIDI::receive(byte *command, byte *note, byte *velocity)
 {
 	if(Serial.available())
 	{
-		command = Serial.read();
-		note = Serial.read();
-		velocity = Serial.read();
+		*command = Serial.read();
+    //Serial.write(*command);
+    if ( ((*command) == 144) || ((*command)==176) ) {
+      //digitalWrite(13,HIGH);
+      while (!Serial.available());
+  		*note = Serial.read();
+      //Serial.write(*note);
+      while (!Serial.available());
+  		*velocity = Serial.read();
+      //Serial.write(*velocity);
+      return 1;
+    }
 	}
-
+  return 0;
 }
 
 int MIDI::decode(byte command, byte note, byte velocity, int *parameter, int *angle) // parameter for stick() and stone()
@@ -38,13 +46,14 @@ int MIDI::decode(byte command, byte note, byte velocity, int *parameter, int *an
 		return 0;
 	}
 
-	if (command == CONTROL_CHANGE)
+	if ((command == CONTROL_CHANGE) && (note != 0))
 	{
 		switch(note)
 		{
 
 			case CONTROL_1 :
 				*parameter = NOTE_DOM;
+         //digitalWrite(13,HIGH);
 				break;
 
 			case CONTROL_2 :
@@ -56,11 +65,13 @@ int MIDI::decode(byte command, byte note, byte velocity, int *parameter, int *an
 				break;
 
 			default :
+        break;
 
 		}
+    //digitalWrite(13,HIGH);
 		return 1;
 	}
-	if (command == CONTROL_CHANGE && note == CONTROL_0)
+	if ((command == 176) && (note == 0))
 	{
 		*angle = velocity;
 		return 2;
