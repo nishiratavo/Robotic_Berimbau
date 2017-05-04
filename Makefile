@@ -16,7 +16,7 @@ DEVICE     = atmega328p
 OPTIMIZE   = -O2
 FREQ       = 16000000
 OPTIONS    = -fpack-struct -fshort-enums
-CFLAGS     = -Wall -gdwarf-2 $(OPTIMIZE) -mmcu=$(DEVICE) -DF_CPU=$(FREQ)
+CFLAGS     = -Wall -gdwarf-2 $(OPTIMIZE) -mmcu=$(DEVICE) -DF_CPU=$(FREQ) -std=c++11
 ASFLAGS    = -Wall -gstabs -mmcu=$(DEVICE) -DF_CPU=$(FREQ)
 LDFLAGS    = -Wl,-Map,$(PRJ_NAME).map
 OBJFLAGS   = -R .eeprom -O ihex "$(PRJ_NAME).elf" "$(PRJ_NAME).hex"
