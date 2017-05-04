@@ -23,6 +23,8 @@ OBJFLAGS   = -R .eeprom -O ihex "$(PRJ_NAME).elf" "$(PRJ_NAME).hex"
 DUDEFLAGS  = -c $(PROGRAMMER) -p $(DEVICE) -P $(PGPORT) -B $(BAUDRATE) -u -U flash:w:"$(PRJ_NAME).hex"
 RSTFLAGS   = -c $(PROGRAMMER) -p $(DEVICE)
 
+-include config.mk
+
 all: $(PRJ_NAME).elf $(PRJ_NAME).hex
 
 $(PRJ_NAME).elf: $(OBJ)

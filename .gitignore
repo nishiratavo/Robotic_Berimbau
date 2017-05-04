@@ -13,3 +13,4 @@
 *.d
 *.hex
 *.map
+config.mk
