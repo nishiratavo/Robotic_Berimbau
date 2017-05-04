@@ -11,6 +11,16 @@ uint8_t ReadDIPSwitch();
  * Inline Functions
  */
 
+static inline int8_t isNearSensorON()
+{
+	return ((PIND & (1 << 2)) != 0);
+}
+
+static inline int8_t isFarSensorON()
+{
+	return ((PIND & (1 << 3)) != 0);
+}
+
 static inline void LedM1ON()
 {
 	PORTC |= (1 << 0);
@@ -41,12 +51,12 @@ static inline void LedMIDIOFF()
 	PORTC &= ~(1 << 2);
 }
 
-static inline void LedNearStingON()
+static inline void LedNearStringON()
 {
 	PORTC |= (1 << 3);
 }
 
-static inline void LedNearStingOFF()
+static inline void LedNearStringOFF()
 {
 	PORTC &= ~(1 << 3);
 }
