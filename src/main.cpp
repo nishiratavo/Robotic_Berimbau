@@ -191,7 +191,7 @@ int main()
 	sei();
 	
 	//BlinkLed.RegisterTimer(&Blink, 100);
-	MidiInterface.Setup(0);
+	MidiInterface.SetChannelCall(&ReadDIPSwitch);
 	MidiInterface.AttachEvent(NoteON, &MidiNoteON);
 	MidiInterface.AttachEvent(NoteOFF, &MidiNoteOFF);
 	MidiInterface.AttachEvent(PitchBend, &MidiRockCtrl);
