@@ -8,12 +8,24 @@
 int main()
 {
 	StateMachine StickCtrl;
-	
+
 	GpioInit();
 	EventsInit();
-	
+
+
+
 	while (1)
 	{
-		StickCtrl.operate();
+  if (isNearSensorON()) { LedSensorNearON();}
+  else {LedSensorNearOFF();}
+
+  if (isFarSensorON()) { LedSensorFarON();}
+  else {LedSensorFarOFF();}
+
+
+
+
+
+    StickCtrl.operate();
 	}
 }

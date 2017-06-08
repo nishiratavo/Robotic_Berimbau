@@ -38,7 +38,6 @@ void StateMachine::change_state(state new_state) {
 
 void StateMachine::operate() {
 
-	LedSensorNearOFF;
   switch (this->State) {
     case Boot:
       LedM1ON();
@@ -65,7 +64,6 @@ void StateMachine::operate() {
       break;
 
     case Idle:
-		LedSensorNearON();
       Stick.Action(OFF,0);
       if (MidiNoteEvent) {
         this->change_state(CCW_End);
