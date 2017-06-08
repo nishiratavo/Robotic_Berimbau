@@ -84,20 +84,24 @@ static inline void LedSensorFarOFF()
 static inline void M1ON()
 {
 	PORTB |= (1 << 4);
+  LedM1ON();
 }
 
 static inline void M1OFF()
 {
 	PORTB &= ~(1 << 4);
+  LedM1OFF();
 }
 
 static inline void M2ON()
 {
 	PORTB |= (1 << 5);
+  LedM2ON();
 }
 
 static inline void M2OFF()
 {
 	PORTB &= ~(1 << 5);
+  LedM2OFF();
 }
 #endif

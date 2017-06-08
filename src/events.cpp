@@ -33,7 +33,7 @@ static void MidiNoteOFF(uint8_t Key, uint8_t Velocity)
 static void MidiRockCtrl(uint8_t Bend, uint8_t useless)
 {
 	static uint8_t RockState = 0;
-	
+
 	switch (Bend)
 	{
 	case 0:
@@ -58,7 +58,7 @@ static void MidiRockCtrl(uint8_t Bend, uint8_t useless)
 		Rock.SetAngle(27);
 		RockState = 2;
 		break;
-		
+
 	default:
 		break;
 	}
@@ -67,14 +67,14 @@ static void MidiRockCtrl(uint8_t Bend, uint8_t useless)
 
 void EventsInit()
 {
+  cli();
 	/*
-	 * Enable the external interrupts 
+	 * Enable the external interrupts
 	 */
-	EICRA = (1 << ISC00) | (0 << ISC00) |
-		(1 << ISC10) | (0 << ISC10);
+	EICRA = (1 << ISC00) | (1 << ISC01) |
+		(1 << ISC10) | (1 << ISC11);
 	EIMSK = (1 << INT0) | (1 << INT1);
-	EIFR = 0;
-	sei();
+	//EIFR = 0;
 
 	/*
 	 * Enable the Timer0 interrupt, 1ms period
@@ -89,6 +89,7 @@ void EventsInit()
 	MidiInterface.AttachEvent(NoteON, &MidiNoteON);
 	MidiInterface.AttachEvent(NoteOFF, &MidiNoteOFF);
 	MidiInterface.AttachEvent(PitchBend, &MidiRockCtrl);
+  sei();
 }
 
 /*

@@ -28,7 +28,7 @@ void Usart::Setup(uint32_t BaudRate, uint8_t StopBits,
 {
 	uint8_t UCSR0C_tmp = 0;
 	uint32_t BAUD_tmp;
-	
+
 	switch (Par)
 	{
 	case Odd:
@@ -50,21 +50,21 @@ void Usart::Setup(uint32_t BaudRate, uint8_t StopBits,
 	{
 	case 1:
 		break;
-		
+
 	case 2:
 		UCSR0C_tmp |= USBS0;
 		break;
-		
+
 	default:
 		break;
 	}
-	
+
 	UCSR0C = UCSR0C_tmp | (1 << UCSZ01) | (1 << UCSZ00);
-	
+
 	UCSR0A = (1 << U2X0);
 
 	UCSR0B = (1 << RXEN0) | (1 << TXEN0) | (1 << RXCIE0);
-	
+
 	BAUD_tmp = (F_CPU / 8);
 	BAUD_tmp /= BaudRate;
 	UBRR0 = BAUD_tmp - 1;
@@ -96,7 +96,6 @@ void Usart::EnableRXByteInt(void (*func)(uint8_t Data))
 	RX_INT = func;
 	UCSR0B &= ~(1 << RXEN0);
 	UCSR0B |= (1 << RXCIE0) | (1 << RXEN0);
-	sei();
 }
 
 Usart::~Usart()
