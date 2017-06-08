@@ -13,4 +13,5 @@
 *.d
 *.hex
 *.map
+*.swp
 config.mk
