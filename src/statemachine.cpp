@@ -82,7 +82,6 @@ void StateMachine::operate() {
         this->initial_time = UniversalTime;
         this->timeout = 500;
       }
-      this->transition = false;
 
       if ((UniversalTime - this->initial_time) < this->timeout)
         this->change_state(CW_Middle);
@@ -100,7 +99,6 @@ void StateMachine::operate() {
         this->initial_time = UniversalTime;
         this->timeout = 500;
       }
-      this->transition = false;
 
       if ((UniversalTime - this->initial_time) < this->timeout)
         this->change_state(CW_Middle);
@@ -118,7 +116,6 @@ void StateMachine::operate() {
         this->initial_time = UniversalTime;
         this->timeout = 50;
       }
-      this->transition = false;
 
       if ((UniversalTime - this->initial_time) < this->timeout)
         this->change_state(CW_Middle);
@@ -137,7 +134,6 @@ void StateMachine::operate() {
         this->initial_time = UniversalTime;
         this->timeout = 500;
       }
-      this->transition = false;
 
       if (MidiNoteEvent)
         this->change_state(CCW_Middle);
@@ -147,7 +143,7 @@ void StateMachine::operate() {
         this->change_state(Idle);
 
 
-     // Motor CW
+      // Motor CW
       // IRQ EndPos => Idle
       // Timeout 0.5s => Idle
       break;
@@ -156,5 +152,7 @@ void StateMachine::operate() {
       this->State = Boot;
       break;
   }
+
+  this->transition = false;
 }
 
