@@ -66,11 +66,11 @@ ISR(INT1_vect)
 		if (StickPos == Middle && LastSensor == NearStringSen)
 		{
 			StickPos = EndPos;
-			Baqueta.Action(Break, 0);
+			Baqueta.Action(Brake, 0);
 		}
 		else
 		{
-			//Baqueta.Action(Break, 0);
+			//Baqueta.Action(Brake, 0);
 			StickPos = Middle;
 		}
 
@@ -102,7 +102,7 @@ ISR(INT1_vect)
 // 		break;
 		
 // 	case 4:
-// 		Baqueta.Action(Break, 255);
+// 		Baqueta.Action(Brake, 255);
 // 		MyTick->UnregisterTimer();
 // 		status = 0;
 // 		break;
@@ -180,7 +180,7 @@ int main()
 
 	Baqueta.Action(TurnCW, 255);
 	_delay_ms(100);
-	Baqueta.Action(Break, 255);
+	Baqueta.Action(Brake, 255);
 
 	StickPos = EndPos;
 

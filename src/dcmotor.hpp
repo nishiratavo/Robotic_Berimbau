@@ -7,7 +7,7 @@ namespace dcmotor
 {
 	enum MotorAction
 	{
-		Break,
+		Brake,
 		TurnCW,
 		TurnCCW,
 		OFF,

@@ -118,7 +118,7 @@ void DCMotor::Action(MotorAction Act, uint8_t Power, int16_t TimeOut)
 		OCR2A = 0;
 		break;
 
-	case Break:
+	case Brake:
 		M2OFF();
 		M1OFF();
 		OCR2A = Power;
