@@ -16,7 +16,7 @@ typedef enum {
 
 using namespace dcmotor;
 
-extern DCMotor Baqueta;
+static DCMotor Stick;
 
 /*
  * Change state and reset flags
@@ -46,7 +46,7 @@ void StateMachine::operate() {
       LedNearStringON();
       LedSensorNearON();
       LedSensorFarON();
-      Baqueta.Action(TurnCW, 255);
+      Stick.Action(TurnCW, 255);
 
       this->initial_time = UniversalTime; // Get timer
       this->timeout = 1000;
@@ -64,7 +64,7 @@ void StateMachine::operate() {
       break;
 
     case Idle:
-      Baqueta.Action(OFF,0);
+      Stick.Action(OFF,0);
       if (MidiNoteEvent) {
         this->change_state(CCW_End);
       }
@@ -77,7 +77,7 @@ void StateMachine::operate() {
 
 
     case CCW_End:
-      Baqueta.Action(TurnCCW, MidiNoteIntensity);
+      Stick.Action(TurnCCW, MidiNoteIntensity);
       if (this->transition == true) {
         this->initial_time = UniversalTime;
         this->timeout = 500;
@@ -94,7 +94,7 @@ void StateMachine::operate() {
       break;
 
     case CCW_Middle:
-      Baqueta.Action(TurnCCW, MidiNoteIntensity);
+      Stick.Action(TurnCCW, MidiNoteIntensity);
       if (this->transition == true) {
         this->initial_time = UniversalTime;
         this->timeout = 500;
@@ -111,7 +111,7 @@ void StateMachine::operate() {
       break;
 
     case NearString:
-      Baqueta.Action(OFF, 0);
+      Stick.Action(OFF, 0);
       if (this->transition == true) {
         this->initial_time = UniversalTime;
         this->timeout = 50;
@@ -129,7 +129,7 @@ void StateMachine::operate() {
 
 
     case CW_Middle:
-      Baqueta.Action(TurnCW, 255);
+      Stick.Action(TurnCW, 255);
       if (this->transition == true) {
         this->initial_time = UniversalTime;
         this->timeout = 500;
