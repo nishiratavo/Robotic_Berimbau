@@ -1,7 +1,6 @@
 #include "servo.hpp"
 #include "gpiodef.hpp"
 #include "usart.hpp"
-#include "tick.hpp"
 #include "dcmotor.hpp"
 #include "midi.hpp"
 
@@ -10,7 +9,6 @@
 
 using namespace servo;
 using namespace usart;
-using namespace tick;
 using namespace dcmotor;
 using namespace midi;
 
@@ -28,23 +26,30 @@ enum Sensors
 };
 
 static DCMotor Baqueta;
-static volatile Tick MotorTime;
 static Midi MidiInterface;
-static Tick HitTimer;
 static Servo Rock;
 static volatile MotorPos StickPos = EndPos;
 static volatile Sensors LastSensor = NearStringSen;
 
+/*
+ * NearSensor interrupt routine
+ */
 ISR(INT0_vect)
 {
 	if (isNearSensorON())
 	{
 		LedSensorNearOFF();
+
+		/*
+		 * If the drumstick is returning to the home position, turn on
+		 * the motor in the CW direction (accelerates towards the home
+		 * position)
+		 */
 		if (StickPos == NearString)
 		{
 			StickPos = Middle;
 			LedNearStringOFF();
-			Baqueta.Action(TurnCW, 120);
+			Baqueta.Action(TurnCW, 120, 800);
 		}
 		else
 		{
@@ -58,19 +63,26 @@ ISR(INT0_vect)
 	else LedSensorNearON();
 }
 
+/*
+ * FarSensor interrupt routine
+ */
 ISR(INT1_vect)
 {
 	if (isFarSensorON())
 	{
 		LedSensorFarOFF();
+		/*
+		 * If the drumstick is returning from a previous played note,
+		 * lock it in the home position with a timeout of 400ms to
+		 * avoid it turn in the CCW direction
+		 */
 		if (StickPos == Middle && LastSensor == NearStringSen)
 		{
 			StickPos = EndPos;
-			Baqueta.Action(Brake, 0);
+			Baqueta.Action(TurnCW, 160, 400);
 		}
 		else
 		{
-			//Baqueta.Action(Brake, 0);
 			StickPos = Middle;
 		}
 
@@ -79,51 +91,13 @@ ISR(INT1_vect)
 	else LedSensorFarON();
 }
 
-// static void HitString(Tick *MyTick)
-// {
-// 	static uint8_t status = 0;
-
-// 	switch (status)
-// 	{
-// 	case 0:
-// 	case 1:
-// 		Baqueta.Action(TurnCCW, 255);
-// 		status++;
-// 		break;
-
-// 	case 2:
-// 		Baqueta.Action(OFF, 255);
-// 		status++;
-// 		break;
-		
-// 	case 3:
-// 		Baqueta.Action(TurnCW, 160);
-// 		status++;
-// 		break;
-		
-// 	case 4:
-// 		Baqueta.Action(Brake, 255);
-// 		MyTick->UnregisterTimer();
-// 		status = 0;
-// 		break;
-
-// 	default:
-// 			break;
-// 	}
-// 	MyTick->UnregisterTimer();
-// 	// if (status < 4) status++;
-// 	// else status = 0;
-// }
-
 static void MidiNoteON(uint8_t Arg1, uint8_t Arg2)
 {
 	if (Arg2 != 0)
 	{
 		LedMIDION();
 		Baqueta.Action(TurnCCW, 2*Arg2);
-		HitTimer.ResetTime();
 		LedM2OFF();
-		//HitTimer.RegisterTimer(&HitString, 50);
 	}
 	else LedMIDIOFF();
 }
@@ -170,7 +144,6 @@ static void MidiRockCtrl(uint8_t Arg1, uint8_t Arg2)
 int main()
 {
 	Usart serial;
-	Tick BlinkLed;
 	
 	GpioInit();
 
@@ -190,7 +163,6 @@ int main()
 	EIFR = 0;
 	sei();
 	
-	//BlinkLed.RegisterTimer(&Blink, 100);
 	MidiInterface.SetChannelCall(&ReadDIPSwitch);
 	MidiInterface.AttachEvent(NoteON, &MidiNoteON);
 	MidiInterface.AttachEvent(NoteOFF, &MidiNoteOFF);
@@ -198,14 +170,6 @@ int main()
 	
 	while (1)
 	{
-		if (HitTimer.ElapsedTime() == 1000)
-		{
-			LedM2ON();
-			//Baqueta.Action(TurnCW, 180);
-		}
-		else if (HitTimer.ElapsedTime() == 1100)
-		{
-			Baqueta.Action(OFF, 0);
-		}
+		
 	}
 }
