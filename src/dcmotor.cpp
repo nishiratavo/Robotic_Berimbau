@@ -8,18 +8,24 @@ using namespace dcmotor;
 DCMotor::DCMotor()
 {
 	/*
-	 * Configure PB3 pin as
-	 * an output (PWM)
+	 * Configure PB3 pin as an output (PWM)
 	 */
 	DDRB |= (1 << 3);
 	
 	OCR2A = 0;
-	
+
+	/*
+	 * Configure the Timer2 to mode 2 (Fast PWM)
+	 */
 	TCCR2A = (1 << COM2A1) | (1 << WGM21) |
 		(1 << WGM20);
 
-	TCCR2B = (1 << CS22) | (0 << CS21) |
-		(0 << CS20);
+	/*
+	 * Configure the PWM frequency to 62.5KHz (Timer2 Clock = 16MHz,
+	 * PWM Clock = (Timer Clock) / 256)
+	 */
+	TCCR2B = (0 << CS22) | (0 << CS21) |
+		(1 << CS20);
 }
 
 void DCMotor::Action(MotorAction Action, uint8_t Power)
