@@ -110,7 +110,7 @@ static void MidiNoteOFF(uint8_t Arg1, uint8_t Arg2)
 static void MidiRockCtrl(uint8_t Arg1, uint8_t Arg2)
 {
 	static uint8_t RockState = 0;
-	
+
 	switch (Arg1)
 	{
 	case 0:
@@ -135,16 +135,16 @@ static void MidiRockCtrl(uint8_t Arg1, uint8_t Arg2)
 		Rock.SetAngle(27);
 		RockState = 2;
 		break;
-		
+
 	default:
 		break;
-	}
-}
+ 	}
+ }
 
 int main()
 {
 	Usart serial;
-	
+
 	GpioInit();
 
 	Rock.SetAngle(30);
@@ -162,14 +162,14 @@ int main()
 	EIMSK = (1 << INT0) | (1 << INT1);
 	EIFR = 0;
 	sei();
-	
+
 	MidiInterface.SetChannelCall(&ReadDIPSwitch);
 	MidiInterface.AttachEvent(NoteON, &MidiNoteON);
 	MidiInterface.AttachEvent(NoteOFF, &MidiNoteOFF);
 	MidiInterface.AttachEvent(PitchBend, &MidiRockCtrl);
-	
+
 	while (1)
 	{
-		
+
 	}
 }

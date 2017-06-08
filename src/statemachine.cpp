@@ -77,7 +77,7 @@ void StateMachine::operate() {
 
 
     case CCW_End:
-      Baqueta.Action(TurnCCW, 255);
+      Baqueta.Action(TurnCCW, MidiNoteIntensity);
       if (this->transition == true) {
         this->initial_time = UniversalTime;
         this->timeout = 500;
@@ -94,7 +94,7 @@ void StateMachine::operate() {
       break;
 
     case CCW_Middle:
-      Baqueta.Action(TurnCCW, 255);
+      Baqueta.Action(TurnCCW, MidiNoteIntensity);
       if (this->transition == true) {
         this->initial_time = UniversalTime;
         this->timeout = 500;
