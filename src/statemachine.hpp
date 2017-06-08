@@ -17,7 +17,7 @@ typedef enum {
 
 class StateMachine {
   private:
-    state State;
+    state State = Boot;
     uint32_t timeout;
     uint32_t initial_time;
     bool transition;

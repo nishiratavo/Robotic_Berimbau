@@ -76,6 +76,15 @@ void EventsInit()
 	EIFR = 0;
 	sei();
 
+	/*
+	 * Enable the Timer0 interrupt, 1ms period
+	 */
+	TCNT0 = 0;
+	OCR0A = 250;
+	TIMSK0 = (1 << OCIE0A);
+	TCCR0A = 0;
+	TCCR0B = (1 << CS01) | (1 << CS00);
+
 	MidiInterface.SetChannelCall(&ReadDIPSwitch);
 	MidiInterface.AttachEvent(NoteON, &MidiNoteON);
 	MidiInterface.AttachEvent(NoteOFF, &MidiNoteOFF);
@@ -96,4 +105,9 @@ ISR(INT0_vect)
 ISR(INT1_vect)
 {
 	FarSensorEvent = true;
+}
+
+ISR(TIMER0_COMPA_vect)
+{
+	UniversalTime++;
 }
