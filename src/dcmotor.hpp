@@ -17,7 +17,8 @@ namespace dcmotor
 	{
 	public:
 		DCMotor();
-		void Action(MotorAction Action, uint8_t Power);
+		void Action(MotorAction Act, uint8_t Power, int16_t TimeOut);
+		void Action(MotorAction Act, uint8_t Power);
 		~DCMotor();
 	private:
 	};
