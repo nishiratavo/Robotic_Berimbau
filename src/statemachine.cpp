@@ -81,6 +81,7 @@ void StateMachine::operate() {
       if (this->transition == true) {
         this->initial_time = UniversalTime;
         this->timeout = 500;
+        this->transition = false;
       }
 
       if ((UniversalTime - this->initial_time) >= this->timeout)
@@ -98,6 +99,7 @@ void StateMachine::operate() {
       if (this->transition == true) {
         this->initial_time = UniversalTime;
         this->timeout = 500;
+        this->transition = false;
       }
 
       if ((UniversalTime - this->initial_time) >= this->timeout)
@@ -105,7 +107,7 @@ void StateMachine::operate() {
       if (NearSensorEvent)
         this->change_state(NearString);
 
-     // Motor CCW
+      // Motor CCW
       // Timeout 0.5s => CW_Middle
       // IRQ nearstring => NearString
       break;
@@ -115,6 +117,7 @@ void StateMachine::operate() {
       if (this->transition == true) {
         this->initial_time = UniversalTime;
         this->timeout = 50;
+        this->transition = false;
       }
 
       if ((UniversalTime - this->initial_time) >= this->timeout)
@@ -129,16 +132,19 @@ void StateMachine::operate() {
 
 
     case CW_Middle:
+      M2ON();
       Stick.Action(TurnCW, 255);
-      if (this->transition == true) {
-        this->initial_time = UniversalTime;
-        this->timeout = 500;
+      if (transition) {
+        initial_time = UniversalTime;
+        timeout = 500;
+        this->transition = false;
       }
 
       if (MidiNoteEvent)
         this->change_state(CCW_Middle);
-      if ((UniversalTime - this->initial_time) >= this->timeout)
+      if ((UniversalTime - this->initial_time) > this->timeout) {
         this->change_state(Idle);
+      }
       if (NearSensorEvent)
         this->change_state(Idle);
 
@@ -153,6 +159,5 @@ void StateMachine::operate() {
       break;
   }
 
-  this->transition = false;
 }
 

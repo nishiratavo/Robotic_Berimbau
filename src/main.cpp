@@ -22,10 +22,6 @@ int main()
   if (isFarSensorON()) { LedSensorFarON();}
   else {LedSensorFarOFF();}
 
-
-
-
-
     StickCtrl.operate();
 	}
 }

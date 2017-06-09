@@ -13,8 +13,8 @@ void GpioInit()
 	 * GPIOs as inputs and enable
 	 * the internal pullups
 	 */
-	DDRD &= 0b00001111;
-	PORTD |= 0b11110000;
+	DDRD &= 0b00000011;
+	PORTD |= 0b11111100;
 
 	/*
 	 * Configure the PB4 and PB5

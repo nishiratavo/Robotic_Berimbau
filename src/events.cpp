@@ -74,7 +74,7 @@ void EventsInit()
 	EICRA = (1 << ISC00) | (1 << ISC01) |
 		(1 << ISC10) | (1 << ISC11);
 	EIMSK = (1 << INT0) | (1 << INT1);
-	//EIFR = 0;
+	EIFR = 0;
 
 	/*
 	 * Enable the Timer0 interrupt, 1ms period
@@ -84,11 +84,12 @@ void EventsInit()
 	TIMSK0 = (1 << OCIE0A);
 	TCCR0A = 0;
 	TCCR0B = (1 << CS01) | (1 << CS00);
-
+/*
 	MidiInterface.SetChannelCall(&ReadDIPSwitch);
 	MidiInterface.AttachEvent(NoteON, &MidiNoteON);
 	MidiInterface.AttachEvent(NoteOFF, &MidiNoteOFF);
 	MidiInterface.AttachEvent(PitchBend, &MidiRockCtrl);
+*/
   sei();
 }
 
