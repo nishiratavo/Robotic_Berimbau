@@ -64,6 +64,7 @@ void StateMachine::operate() {
       break;
 
     case Idle:
+      LedMIDIOFF();
       Stick.Action(OFF,0);
       if (MidiNoteEvent) {
         this->change_state(CCW_End);
@@ -86,6 +87,9 @@ void StateMachine::operate() {
 
       if ((UniversalTime - this->initial_time) >= this->timeout)
         this->change_state(CW_Middle);
+      if (NearSensorEvent) {
+        this->change_state(NearString);
+      }
       if (FarSensorEvent)
         this->change_state(CCW_Middle);
 
@@ -145,7 +149,7 @@ void StateMachine::operate() {
       if ((UniversalTime - this->initial_time) > this->timeout) {
         this->change_state(Idle);
       }
-      if (NearSensorEvent)
+      if (FarSensorEvent)
         this->change_state(Idle);
 
 

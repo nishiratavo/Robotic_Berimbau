@@ -84,12 +84,12 @@ void EventsInit()
 	TIMSK0 = (1 << OCIE0A);
 	TCCR0A = 0;
 	TCCR0B = (1 << CS01) | (1 << CS00);
-/*
+
 	MidiInterface.SetChannelCall(&ReadDIPSwitch);
 	MidiInterface.AttachEvent(NoteON, &MidiNoteON);
 	MidiInterface.AttachEvent(NoteOFF, &MidiNoteOFF);
 	MidiInterface.AttachEvent(PitchBend, &MidiRockCtrl);
-*/
+
   sei();
 }
 
