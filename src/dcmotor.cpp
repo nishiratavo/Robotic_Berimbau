@@ -6,26 +6,27 @@
 
 using namespace dcmotor;
 
-static volatile uint32_t MotorPeriod = 0;
+//static volatile uint32_t MotorPeriod = 0;
 
 /*
  * Interrupt routine of the Timer2 (Overflow), used to turn off the DC
  * motor once the timeout has reached
  */
-ISR(TIMER2_OVF_vect)
-{
-	if (MotorPeriod > 0)
+//ISR(TIMER2_OVF_vect)
+//{
+  /*	if (MotorPeriod > 0)
 	{
 		MotorPeriod--;
 		if (MotorPeriod == 0)
 		{
-			
+
 			OCR2A = 255;
 			M2OFF();
 			M1OFF();
 		}
-	}
-}
+	}*/
+
+//}
 
 DCMotor::DCMotor()
 {
@@ -33,13 +34,13 @@ DCMotor::DCMotor()
 	 * Configure PB3 pin as an output (PWM)
 	 */
 	DDRB |= (1 << 3);
-	
+
 	OCR2A = 0;
 
 	/*
 	 * Configure the Timer2 to mode 2 (Fast PWM)
 	 */
-	TCCR2A = (1 << COM2A1) | (1 << WGM21) |
+	TCCR2A = (1 << COM2A1) |(1 << WGM21) |
 		(1 << WGM20);
 
 	/*
@@ -52,7 +53,7 @@ DCMotor::DCMotor()
 	/*
 	 * Enable the Overflow Interrupt of the Timer2
 	 */
-	TIMSK2 = TOIE2;
+	/*TIMSK2 = TOIE2;*/
 }
 
 void DCMotor::Action(MotorAction Act, uint8_t Power, int16_t TimeOut)
@@ -60,40 +61,40 @@ void DCMotor::Action(MotorAction Act, uint8_t Power, int16_t TimeOut)
 	/*
 	 * Disables the Timer2 overflow interrupt temporally
 	 */
-	TIMSK2 &= ~TOIE2;
-
+	/*TIMSK2 &= ~TOIE2;
+*/
 	/*
 	 * Clear the Timer2 counter to make the timeout accurate
 	 */
-	TCNT2 = 0;
+	//TCNT2 = 0;
 
 	/*
 	 * If the specified timeout is negative, set MotorPeriod to 0, so
 	 * the effective timeout is infinite
 	 */
-	if (TimeOut < 0)
+/*	if (TimeOut < 0)
 	{
 		MotorPeriod = 0;
-	}
+	}*/
 	/*
 	 * If the specified timeout is 0, turn off the motor
 	 */
-	else if (TimeOut == 0)
+	/*else if (TimeOut == 0)
 	{
 		M2OFF();
 		M1OFF();
 		OCR2A = 255;
 		return;
-	}
+	}*/
 	/*
 	 * For positive values of the timeout, calculate the equivalent
 	 * number of interrupt events of the Timer2 (TimeOut in ms):
 	 * MotorPeriod = (62500Hz/1000Hz) * TimeOut
 	 */
-	else
+	/*else
 	{
 		MotorPeriod = (TimeOut * 62) + (TimeOut >> 2);
-	}
+	}*/
 
 	/*
 	 * Execute the solicited action
@@ -116,6 +117,7 @@ void DCMotor::Action(MotorAction Act, uint8_t Power, int16_t TimeOut)
 		M2OFF();
 		M1OFF();
 		OCR2A = 0;
+    //PORTD &= (0 << 3);
 		break;
 
 	case Brake:
@@ -131,7 +133,7 @@ void DCMotor::Action(MotorAction Act, uint8_t Power, int16_t TimeOut)
 	/*
 	 * Reenable the Timer2 overflow interrupt
 	 */
-	TIMSK2 |= TOIE2;
+	/*TIMSK2 |= TOIE2;*/
 }
 
 void DCMotor::Action(MotorAction Act, uint8_t Power)

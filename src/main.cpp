@@ -7,11 +7,11 @@
 
 int main()
 {
-	StateMachine StickCtrl;
+
+  StateMachine StickCtrl;
 
 	GpioInit();
-	EventsInit();
-
+  EventsInit();
 
 
 	while (1)
@@ -24,4 +24,5 @@ int main()
 
     StickCtrl.operate();
 	}
+
 }

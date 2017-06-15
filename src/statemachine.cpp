@@ -52,6 +52,7 @@ void StateMachine::operate() {
       this->timeout = 1000;
 
       while ( (UniversalTime - this->initial_time) < this->timeout);
+
       LedM1OFF();
       LedM2OFF();
       LedMIDIOFF();
@@ -64,7 +65,6 @@ void StateMachine::operate() {
       break;
 
     case Idle:
-      LedMIDIOFF();
       Stick.Action(OFF,0);
       if (MidiNoteEvent) {
         this->change_state(CCW_End);
