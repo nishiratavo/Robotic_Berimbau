@@ -1,0 +1,28 @@
+strict digraph statemachine{
+  a [label = "End-Position Break"];
+  b [label = "End-Position CCW"];
+  c [label = "Mid-Position CCW"];
+  d [label = "Near-String Sensor-Off"];
+  e [label = "Mid-Position CW"];
+
+  a -> b [label = "MIDI Note"];
+  a -> e [label = "IRQ End-Course"];
+
+  b -> c [label = "IRQ End-Course"];
+  b -> d [label = "IRQ Near-String"];
+  b -> e [label = "Timeout 0.5s"]
+
+  c -> d [label = "IRQ Near-String"];
+  c -> e [label = "Timeout 0.5s"];
+
+  d -> e [label = "IRQ Near-String"];
+  d -> e [label = "Timeout 10ms"];
+
+  e -> b [label = "MIDI Note"];
+  e -> a [label = "IRQ End-Course"];
+  e -> a [label = "Timeout 0.5s"];
+
+  { rank=same; a b }
+	{ rank=same; d e }
+
+}
