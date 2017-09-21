@@ -26,7 +26,8 @@ namespace midi
 	{
 	public:
 		Midi();
-		void Setup(uint8_t Channel);
+		void SetChannel(uint8_t Channel);
+		void SetChannelCall(uint8_t (*GetChannel)());
 		void AttachEvent(MidiEvent Event, void (*func)(uint8_t Arg1, uint8_t Arg2));
 		~Midi();
 	private:
